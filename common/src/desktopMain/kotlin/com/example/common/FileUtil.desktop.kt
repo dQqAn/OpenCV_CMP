@@ -7,7 +7,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import io.reactivex.rxjava3.subjects.PublishSubject
 import org.bytedeco.javacpp.opencv_stitching
-import org.jetbrains.skia.Image
 import java.awt.image.BufferedImage
 import java.io.*
 import java.net.URI
@@ -154,7 +153,3 @@ actual class FileUtil(
     }
 
 }
-
-actual fun ByteArray.toImageBitmap(): ImageBitmap =
-    Image.makeFromEncoded(this).toComposeImageBitmap()
-

@@ -30,8 +30,6 @@ expect class ImageStitcher(fileUtil: FileUtil) {
 
 expect class StitcherInput
 
-expect fun ByteArray.toImageBitmap(): ImageBitmap
-
 sealed class StitcherOutput {
     class Success(val file: File) : StitcherOutput()
     class Failure(val e: Exception) : StitcherOutput()
