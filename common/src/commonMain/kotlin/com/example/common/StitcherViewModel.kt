@@ -3,6 +3,7 @@ package com.example.common
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.ImageBitmap
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -16,7 +17,7 @@ class StitcherViewModel(
 
     private lateinit var disposable: Disposable
 
-//    internal var imageBitmap: MutableState<ImageBitmap?> = mutableStateOf(null)
+    internal var imageBitmap: MutableState<ImageBitmap?> = mutableStateOf(null)
 
     internal var isScansChecked = mutableStateOf(true)
 
@@ -27,6 +28,7 @@ class StitcherViewModel(
     internal var outputFile: MutableState<File?> = mutableStateOf(null)
 
     init {
+        //https://answers.opencv.org/question/129623/hello-trying-to-create-a-cvmat-got-insufficient-memory/
         setUpStitcher()
 //        chooseImages()
     }
@@ -75,7 +77,7 @@ class StitcherViewModel(
 
                 outputFile.value = output.file
 
-                showImage(output.file)
+                showImage(output.file, imageBitmap)
             }
 
             is StitcherOutput.Failure -> {
@@ -87,7 +89,8 @@ class StitcherViewModel(
     @OptIn(ExperimentalResourceApi::class)
     private fun showImage(
         file: File,
+        imageBitmap: MutableState<ImageBitmap?>
     ) {
-
+        fileUtil.showImage(file, imageBitmap)
     }
 }

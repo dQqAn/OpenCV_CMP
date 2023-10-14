@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Environment.DIRECTORY_PICTURES
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
@@ -18,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -86,29 +84,13 @@ actual class FileUtil(
                 launcher.launch("image/*")
             }
         }
-
-        //https://answers.opencv.org/question/129623/hello-trying-to-create-a-cvmat-got-insufficient-memory/
-        outputFile.value?.let {
-//            val bitmap = resource(it.absolutePath).rememberImageBitmap()
-//            println(bitmap)
-//            println("o: " + it)
-            Image(
-                rememberAsyncImagePainter(it),
-                contentDescription = ""
-            )
-//            resource(it.absolutePath).rememberImageBitmap()
-        }
     }
 
-    @Composable
     actual fun showImage(
         file: File,
         imageBitmap: MutableState<ImageBitmap?>
     ) {
-//        Image(
-//            rememberAsyncImagePainter(file),
-//            contentDescription = ""
-//        )
+        imageBitmap.value = BitmapFactory.decodeFile(file.absolutePath).asImageBitmap()
     }
 
     actual fun processImages(uris: List<Any?>, isScansChecked: Boolean) {

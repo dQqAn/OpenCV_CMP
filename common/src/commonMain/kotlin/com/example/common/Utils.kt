@@ -12,12 +12,9 @@ expect class FileUtil {
     fun chooseImages(
         openGallery: MutableState<Boolean>,
         isScansChecked: MutableState<Boolean>,
-
-
         outputFile: MutableState<File?>
     )
 
-    @Composable
     fun showImage(
         file: File,
         imageBitmap: MutableState<ImageBitmap?>
