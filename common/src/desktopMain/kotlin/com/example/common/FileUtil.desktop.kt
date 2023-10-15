@@ -64,6 +64,8 @@ actual class FileUtil(
                     openGallery.value = false
                     outputFile.value = null
                     processImages(fileList.toList(), isScansChecked.value)
+                } else {
+                    openGallery.value = false
                 }
             }
         }
