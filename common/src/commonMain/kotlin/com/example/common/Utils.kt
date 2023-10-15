@@ -12,12 +12,9 @@ expect class FileUtil {
     fun chooseImages(
         openGallery: MutableState<Boolean>,
         isScansChecked: MutableState<Boolean>,
-
-
         outputFile: MutableState<File?>
     )
 
-    @Composable
     fun showImage(
         file: File,
         imageBitmap: MutableState<ImageBitmap?>
@@ -32,8 +29,6 @@ expect class ImageStitcher(fileUtil: FileUtil) {
 }
 
 expect class StitcherInput
-
-expect fun ByteArray.toImageBitmap(): ImageBitmap
 
 sealed class StitcherOutput {
     class Success(val file: File) : StitcherOutput()

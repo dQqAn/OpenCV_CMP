@@ -1,6 +1,5 @@
 package com.example.common
 
-import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -8,7 +7,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import io.reactivex.rxjava3.subjects.PublishSubject
 import org.bytedeco.javacpp.opencv_stitching
-import org.jetbrains.skia.Image
 import java.awt.image.BufferedImage
 import java.io.*
 import java.net.URI
@@ -69,30 +67,16 @@ actual class FileUtil(
                 }
             }
         }
-
-        outputFile.value?.let {
-//            Image(it.toURI(),"")
-
-//            println("o: " + outputFile.value)
-
-//            ImageDecoder(
-//                src= it.toURI().toPath(),
-//                is=InputStream
-//            )
-
-            var img: BufferedImage? = null
-            img = ImageIO.read(it)
-//            val icon = ImageIcon(img)
-            Image(img.toComposeImageBitmap(), "")
-        }
     }
 
-    @Composable
     actual fun showImage(
         file: File,
         imageBitmap: MutableState<ImageBitmap?>
     ) {
-
+        val img: BufferedImage? = ImageIO.read(file)
+//        val icon = ImageIcon(img)
+//        Image(img!!.toComposeImageBitmap(), "")
+        imageBitmap.value = img!!.toComposeImageBitmap()
     }
 
     actual fun processImages(uris: List<Any?>, isScansChecked: Boolean) {
@@ -169,7 +153,3 @@ actual class FileUtil(
     }
 
 }
-
-actual fun ByteArray.toImageBitmap(): ImageBitmap =
-    Image.makeFromEncoded(this).toComposeImageBitmap()
-
