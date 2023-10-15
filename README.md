@@ -1,1 +1,1 @@
-# OpenCV-CM
+# OpenCV_CMP
