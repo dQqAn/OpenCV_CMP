@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -60,6 +61,15 @@ private fun MainContent(
                     Spacer(Modifier.width(20.dp))
                 }
             }
+        }
+
+        Row(Modifier.height(20.dp)) {
+            Text("Use CLAHE")
+            Spacer(Modifier.width(5.dp))
+            Checkbox(
+                checked = stitcherViewModel.claheState.value,
+                onCheckedChange = { stitcherViewModel.changeClaheState(it) },
+            )
         }
 
         Button(

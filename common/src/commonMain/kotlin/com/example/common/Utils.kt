@@ -25,7 +25,7 @@ expect class FileUtil {
 }
 
 expect class ImageStitcher(fileUtil: FileUtil) {
-    fun stitchImages(input: StitcherInput): Single<StitcherOutput>
+    fun stitchImages(input: StitcherInput, claheState: Boolean): Single<StitcherOutput>
 }
 
 expect class StitcherInput

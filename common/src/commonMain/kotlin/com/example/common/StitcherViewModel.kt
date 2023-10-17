@@ -27,6 +27,11 @@ class StitcherViewModel(
 
     internal var outputFile: MutableState<File?> = mutableStateOf(null)
 
+    internal val claheState: MutableState<Boolean> = mutableStateOf(false)
+    internal fun changeClaheState(state: Boolean) {
+        claheState.value = state
+    }
+
     init {
         //https://answers.opencv.org/question/129623/hello-trying-to-create-a-cvmat-got-insufficient-memory/
         setUpStitcher()
@@ -35,7 +40,7 @@ class StitcherViewModel(
 
     fun setUpStitcher() {
         disposable = fileUtil.stitcherInputRelay.switchMapSingle { stitcherInput ->
-            imageStitcher.stitchImages(stitcherInput)
+            imageStitcher.stitchImages(stitcherInput, claheState.value)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .doOnSubscribe {
