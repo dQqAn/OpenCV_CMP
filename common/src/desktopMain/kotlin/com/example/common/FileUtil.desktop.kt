@@ -44,8 +44,8 @@ actual class FileUtil(
                 fc.isAcceptAllFileFilterUsed = false;
                 fc.isMultiSelectionEnabled = true
 
-                fc.dialogTitle = "Select a .jpeg file"
-                val restrict = FileNameExtensionFilter("Only .jpeg files", "jpeg")
+                fc.dialogTitle = "Select .jpeg, .png or .jpg files"
+                val restrict = FileNameExtensionFilter(".jpeg, .png or .jpg files", "jpeg", "png", "jpg")
                 fc.addChoosableFileFilter(restrict)
 
 //                val result: Int = fc.showOpenDialog(null)
