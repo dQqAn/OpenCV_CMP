@@ -67,19 +67,25 @@ actual class ImageStitcher actual constructor(
 
 //           resize(src,src,opencv_core.Size(500,600))
 
+                val newMat = opencv_core.Mat()
+                val newVector = MatVector(newMat)
 //            cvtColor(src, dst, CV_BGR2GRAY)
-                opencv_imgproc.cvtColor(src, src, opencv_imgproc.CV_BGR2GRAY)
+                opencv_imgproc.cvtColor(src, src, opencv_imgproc.CV_BGR2Lab)
+                opencv_core.split(src, newVector)
+
 
 //            medianBlur(src, src, 3)
 
 //            clahe.apply(src, dst)
-                clahe.apply(src, src)
+                clahe.apply(newVector[0], newVector[0])
+                opencv_core.merge(newVector, src)
 
 //            if (i==1){
 //                opencv_highgui.imshow("clahe",src)
 //            }
 
-                opencv_imgproc.cvtColor(src, src, opencv_imgproc.CV_GRAY2BGR)
+//                opencv_imgproc.cvtColor(src, src, opencv_imgproc.CV_GRAY2BGR)
+                opencv_imgproc.cvtColor(src, src, opencv_imgproc.CV_Lab2BGR)
 
 //            if (i==1){
 //                opencv_highgui.imshow("clahe2",src)
