@@ -42,6 +42,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.bytedeco.javacpp.Loader
 import org.bytedeco.javacpp.opencv_imgproc
 import org.bytedeco.javacpp.opencv_java
@@ -445,10 +447,36 @@ fun ImageCapture.takePicture(
             os.close()*/
 
             //way 2
-            val fos = FileOutputStream(photoFile)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
-            fos.flush()
-            fos.close()
+            cameraViewModel.viewModelScope.launch(Dispatchers.IO) {
+                val fos = FileOutputStream(photoFile)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                fos.flush()
+                fos.close()
+
+                val savedUri = Uri.fromFile(photoFile)
+
+                //only way 5
+//            val savedUri = Uri.fromFile(outputUri?.path?.let { File(it) })
+
+                //close comments below for way 4 & 5
+
+                // If the folder selected is an external media directory, this is
+                // unnecessary but otherwise other apps will not be able to access our
+                // images unless we scan them using [MediaScannerConnection]
+                val mimeType = MimeTypeMap.getSingleton()
+                    .getMimeTypeFromExtension(savedUri.toFile().extension)
+
+                MediaScannerConnection.scanFile(
+                    context,
+                    arrayOf(savedUri.toFile().absolutePath),
+                    arrayOf(mimeType)
+                ) { _, uri ->
+
+                }
+
+                onImageCaptured(savedUri, false)
+            }
+
 
             //way 3
             /*//Convert bitmap to byte array
@@ -489,7 +517,7 @@ fun ImageCapture.takePicture(
 
             //save image
             //except way 5
-            val savedUri = Uri.fromFile(photoFile)
+            /*val savedUri = Uri.fromFile(photoFile)
 
             //only way 5
 //            val savedUri = Uri.fromFile(outputUri?.path?.let { File(it) })
@@ -510,7 +538,7 @@ fun ImageCapture.takePicture(
 
             }
 
-            onImageCaptured(savedUri, false)
+            onImageCaptured(savedUri, false)*/
         }
 
         override fun onError(exception: ImageCaptureException) {
