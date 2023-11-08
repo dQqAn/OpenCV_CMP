@@ -449,7 +449,7 @@ fun ImageCapture.takePicture(
             //way 2
             cameraViewModel.viewModelScope.launch(Dispatchers.IO) {
                 val fos = FileOutputStream(photoFile)
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos) //https://stackoverflow.com/a/47971423
                 fos.flush()
                 fos.close()
 
