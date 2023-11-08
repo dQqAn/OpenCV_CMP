@@ -4,10 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Matrix
-import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Build
-import android.webkit.MimeTypeMap
+import android.provider.MediaStore
 import android.widget.ImageView
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -39,7 +38,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import org.bytedeco.javacpp.Loader
@@ -54,7 +52,6 @@ import org.opencv.core.Size
 import org.opencv.imgproc.Imgproc.createCLAHE
 import org.opencv.imgproc.Imgproc.cvtColor
 import java.io.File
-import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.coroutines.resume
@@ -445,10 +442,10 @@ fun ImageCapture.takePicture(
             os.close()*/
 
             //way 2
-            val fos = FileOutputStream(photoFile)
+            /*val fos = FileOutputStream(photoFile)
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
             fos.flush()
-            fos.close()
+            fos.close()*/
 
             //way 3
             /*//Convert bitmap to byte array
@@ -462,12 +459,23 @@ fun ImageCapture.takePicture(
             fos.flush()
             fos.close()*/
 
+            //way 4
+            MediaStore.Images.Media.insertImage(
+                context.contentResolver,
+                bitmap,
+                photoFile.nameWithoutExtension,
+                photoFile.nameWithoutExtension
+            )
+
             //save image
             val savedUri = Uri.fromFile(photoFile)
+
+            //close comments below for way 4
+
             // If the folder selected is an external media directory, this is
             // unnecessary but otherwise other apps will not be able to access our
             // images unless we scan them using [MediaScannerConnection]
-            val mimeType = MimeTypeMap.getSingleton()
+            /*val mimeType = MimeTypeMap.getSingleton()
                 .getMimeTypeFromExtension(savedUri.toFile().extension)
             MediaScannerConnection.scanFile(
                 context,
@@ -475,7 +483,7 @@ fun ImageCapture.takePicture(
                 arrayOf(mimeType)
             ) { _, uri ->
 
-            }
+            }*/
             onImageCaptured(savedUri, false)
         }
 
