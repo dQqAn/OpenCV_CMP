@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.platform.LocalContext
 import com.example.common.AndroidActivityViewModel
+import com.example.common.CameraViewModel
 import com.example.common.MainPage
 import com.example.common.StitcherViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private val stitcherViewModel: StitcherViewModel by viewModel()
     private val androidActivityViewModel: AndroidActivityViewModel by viewModel()
+    private val cameraViewModel: CameraViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             val context = LocalContext.current
             MaterialTheme {
                 androidActivityViewModel.activity.value = context.getActivity()?.apply {
-                    MainPage(stitcherViewModel)
+                    MainPage(stitcherViewModel, cameraViewModel)
                 }
             }
         }

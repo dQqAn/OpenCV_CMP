@@ -23,15 +23,50 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun MainPage(
-    stitcherViewModel: StitcherViewModel
+    stitcherViewModel: StitcherViewModel,
+    cameraViewModel: CameraViewModel
 ) {
-    MainContent(stitcherViewModel)
+    MainContent(stitcherViewModel, cameraViewModel)
 }
 
 @Composable
 private fun MainContent(
-    stitcherViewModel: StitcherViewModel
+    stitcherViewModel: StitcherViewModel,
+    cameraViewModel: CameraViewModel
 ) {
+    val dummyNavigationState = rememberSaveable { mutableStateOf(true) }
+
+    stitcherViewModel.chooseImages()
+
+    Column(
+        Modifier.selectableGroup().fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Button(
+            onClick = {
+                dummyNavigationState.value = !dummyNavigationState.value
+            }
+        ) {
+            if (dummyNavigationState.value) {
+                Text("Camera Page")
+            } else {
+                Text("Main Page")
+            }
+        }
+
+        if (dummyNavigationState.value) {
+            MainPageContent(stitcherViewModel)
+
+        } else {
+            CameraPage(stitcherViewModel, cameraViewModel)
+        }
+    }
+}
+
+@Composable
+fun MainPageContent(stitcherViewModel: StitcherViewModel) {
+
     val radioOptions = listOf("Scans", "Panorama")
 
     val (selectedOption: String, onOptionSelected: (String) -> Unit) = rememberSaveable {
@@ -42,8 +77,6 @@ private fun MainContent(
     }
 
     val imageBitmap: MutableState<ImageBitmap?> = stitcherViewModel.imageBitmap
-
-    stitcherViewModel.chooseImages()
 
     Column(
         Modifier.selectableGroup().fillMaxSize(),

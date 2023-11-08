@@ -74,7 +74,13 @@ kotlin {
 
                 implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
 
-                implementation("io.coil-kt:coil-compose:2.4.0")
+                val cameraxVersion = "1.3.0"
+                implementation("androidx.camera:camera-core:${cameraxVersion}")
+                implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+                implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+                implementation("androidx.camera:camera-video:${cameraxVersion}")
+                implementation("androidx.camera:camera-view:${cameraxVersion}")
+                implementation("androidx.camera:camera-extensions:${cameraxVersion}")
 
                 implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-arm64")
                 implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-arm")

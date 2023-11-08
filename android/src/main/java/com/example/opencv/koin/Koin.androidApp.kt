@@ -3,6 +3,7 @@ package com.example.opencv.koin
 import android.app.Application
 import android.content.Context
 import com.example.common.AndroidActivityViewModel
+import com.example.common.CameraViewModel
 import com.example.common.FileUtil
 import com.example.common.initKoin
 import org.koin.dsl.module
@@ -16,6 +17,8 @@ class AndroidApp : Application() {
                 single<Context> { this@AndroidApp }
 
                 single { AndroidActivityViewModel() }
+
+                single { CameraViewModel() }
 
                 single {
                     FileUtil(

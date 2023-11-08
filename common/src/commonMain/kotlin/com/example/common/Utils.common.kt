@@ -34,3 +34,8 @@ sealed class StitcherOutput {
     class Success(val file: File) : StitcherOutput()
     class Failure(val e: Exception) : StitcherOutput()
 }
+
+@Composable
+expect fun CameraPage(stitcherViewModel: StitcherViewModel, cameraViewModel: CameraViewModel)
+
+expect class CameraViewModel
