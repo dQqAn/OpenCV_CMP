@@ -98,4 +98,8 @@ class StitcherViewModel(
     ) {
         fileUtil.showImage(file, imageBitmap)
     }
+
+    override fun onCleared() {
+        disposable.dispose()
+    }
 }
