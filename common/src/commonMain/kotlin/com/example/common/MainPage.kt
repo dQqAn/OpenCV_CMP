@@ -12,12 +12,10 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
@@ -76,7 +74,7 @@ fun MainPageContent(stitcherViewModel: StitcherViewModel) {
         )
     }
 
-    val imageBitmap: MutableState<ImageBitmap?> = stitcherViewModel.imageBitmap
+//    val imageBitmap: MutableState<ImageBitmap?> = stitcherViewModel.imageBitmap
 
     Column(
         Modifier.selectableGroup().fillMaxSize(),
@@ -109,12 +107,13 @@ fun MainPageContent(stitcherViewModel: StitcherViewModel) {
             onClick = {
                 stitcherViewModel.isScansChecked.value = selectedOption == "Scans"
                 stitcherViewModel.isOpenGallery.value = true
+                stitcherViewModel.setUpStitcher()
             }
         ) {
             Text("Choose Images")
         }
 
-        imageBitmap.value?.let {
+        stitcherViewModel.imageBitmap.value?.let {
             Image(bitmap = it, contentDescription = null)
         }
     }

@@ -4,10 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.ImageBitmap
-import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import java.io.File
 
 class StitcherViewModel(
@@ -15,7 +14,8 @@ class StitcherViewModel(
     private val imageStitcher: ImageStitcher
 ) : ViewModel() {
 
-    private lateinit var disposable: Disposable
+    //    private lateinit var disposable: Disposable
+    private var compositeDisposables: CompositeDisposable = CompositeDisposable()
 
     internal var imageBitmap: MutableState<ImageBitmap?> = mutableStateOf(null)
 
@@ -34,12 +34,12 @@ class StitcherViewModel(
 
     init {
         //https://answers.opencv.org/question/129623/hello-trying-to-create-a-cvmat-got-insufficient-memory/
-        setUpStitcher()
+//        setUpStitcher()
 //        chooseImages()
     }
 
     fun setUpStitcher() {
-        disposable = fileUtil.stitcherInputRelay.switchMapSingle { stitcherInput ->
+        /*disposable = fileUtil.stitcherInputRelay.switchMapSingle { stitcherInput ->
             imageStitcher.stitchImages(stitcherInput, claheState.value)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
@@ -62,7 +62,38 @@ class StitcherViewModel(
                 processResult(it)
             }, {
                 processError(it)
-            })
+            })*/
+
+        outputFile.value = null
+        compositeDisposables.clear()
+        compositeDisposables.add(
+            fileUtil.stitcherInputRelay.switchMapSingle { stitcherInput ->
+                imageStitcher.stitchImages(stitcherInput, claheState.value)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.io())
+                    .doOnSubscribe {
+                        RxJavaPlugins.setErrorHandler { th ->
+                            println(th.localizedMessage)
+                        }
+                    }
+                    .doOnSuccess {
+
+                    }
+            }
+                .subscribe({
+                    processResult(it)
+                }, {
+                    processError(it)
+                }, {
+                    compositeDisposables.clear()
+                })
+        )
+
+        //todo(set disposable into gallery manager)
+        //todo(set low bitmap size)
+        //todo(set try catch panorama & scans)
+        //todo(set null to imageBitmap)
+        //todo(clear cache in every stitch array)
     }
 
     @Composable
@@ -79,9 +110,7 @@ class StitcherViewModel(
     ) {
         when (output) {
             is StitcherOutput.Success -> {
-
                 outputFile.value = output.file
-
                 showImage(output.file, imageBitmap)
             }
 
@@ -91,7 +120,6 @@ class StitcherViewModel(
         }
     }
 
-    @OptIn(ExperimentalResourceApi::class)
     private fun showImage(
         file: File,
         imageBitmap: MutableState<ImageBitmap?>
@@ -100,6 +128,7 @@ class StitcherViewModel(
     }
 
     override fun onCleared() {
-        disposable.dispose()
+//        disposable.dispose()
+        compositeDisposables.dispose()
     }
 }
