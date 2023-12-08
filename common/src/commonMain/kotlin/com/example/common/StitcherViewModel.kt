@@ -49,16 +49,10 @@ class StitcherViewModel(
                     }
                 }
                 .doOnSuccess {
-//                    println("2: "+ it)
-//                    println(imageBitmap.value)
+
                 }
         }
             .subscribe({
-//                println("3: "+ it)
-//                println(imageBitmap.value)
-//                println(images.value)
-
-//                println(it)
                 processResult(it)
             }, {
                 processError(it)
@@ -75,17 +69,20 @@ class StitcherViewModel(
                         RxJavaPlugins.setErrorHandler { th ->
                             println(th.localizedMessage)
                         }
-                    }
-                    .doOnSuccess {
+                    }.doOnSuccess {
+
+                    }.doOnError {
 
                     }
             }
                 .subscribe({
                     processResult(it)
+//                    compositeDisposables.clear()
                 }, {
                     processError(it)
+//                    compositeDisposables.clear()
                 }, {
-                    compositeDisposables.clear()
+
                 })
         )
 
@@ -125,6 +122,11 @@ class StitcherViewModel(
         imageBitmap: MutableState<ImageBitmap?>
     ) {
         fileUtil.showImage(file, imageBitmap)
+    }
+
+    @Composable
+    fun showPyTorchTexts() {
+        fileUtil.PyTorchTexts(outputFile.value)
     }
 
     override fun onCleared() {

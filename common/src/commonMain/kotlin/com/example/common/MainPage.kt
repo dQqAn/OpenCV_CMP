@@ -107,6 +107,8 @@ fun MainPageContent(stitcherViewModel: StitcherViewModel) {
             onClick = {
                 stitcherViewModel.isScansChecked.value = selectedOption == "Scans"
                 stitcherViewModel.isOpenGallery.value = true
+                stitcherViewModel.outputFile.value = null
+                stitcherViewModel.imageBitmap.value = null
                 stitcherViewModel.setUpStitcher()
             }
         ) {
@@ -115,6 +117,9 @@ fun MainPageContent(stitcherViewModel: StitcherViewModel) {
 
         stitcherViewModel.imageBitmap.value?.let {
             Image(bitmap = it, contentDescription = null)
+
+            //PyTorch is only for Android.
+//            stitcherViewModel.showPyTorchTexts()
         }
     }
 }

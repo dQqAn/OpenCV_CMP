@@ -92,6 +92,11 @@ kotlin {
 //                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-x86_64")
 //                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-arm64")
 //                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-arm")
+
+                // https://mvnrepository.com/artifact/org.pytorch/pytorch_android
+                implementation("org.pytorch:pytorch_android:2.1.0")
+                // https://mvnrepository.com/artifact/org.pytorch/pytorch_android_torchvision
+                implementation("org.pytorch:pytorch_android_torchvision:2.1.0")
             }
         }
         val desktopMain by getting {

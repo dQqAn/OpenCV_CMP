@@ -154,4 +154,8 @@ actual class FileUtil(
         private const val JPG_EXTENSION = ".jpg"
     }
 
+    @Composable
+    actual fun PyTorchTexts(outputFile: File?) {
+
+    }
 }

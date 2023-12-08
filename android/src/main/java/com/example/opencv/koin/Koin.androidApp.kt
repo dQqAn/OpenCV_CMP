@@ -2,10 +2,7 @@ package com.example.opencv.koin
 
 import android.app.Application
 import android.content.Context
-import com.example.common.AndroidActivityViewModel
-import com.example.common.CameraViewModel
-import com.example.common.FileUtil
-import com.example.common.initKoin
+import com.example.common.*
 import org.koin.dsl.module
 
 class AndroidApp : Application() {
@@ -19,6 +16,8 @@ class AndroidApp : Application() {
                 single { AndroidActivityViewModel() }
 
                 single { CameraViewModel() }
+
+                single { ImageStitcher(context = get(), fileUtil = get()) }
 
                 single {
                     FileUtil(

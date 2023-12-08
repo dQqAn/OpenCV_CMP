@@ -22,9 +22,12 @@ expect class FileUtil {
 
     fun processImages(uris: List<Any?>, isScansChecked: Boolean)
     val stitcherInputRelay: PublishSubject<StitcherInput>
+
+    @Composable
+    fun PyTorchTexts(outputFile: File?)
 }
 
-expect class ImageStitcher(fileUtil: FileUtil) {
+expect class ImageStitcher {
     fun stitchImages(input: StitcherInput, claheState: Boolean): Single<StitcherOutput>
 }
 
