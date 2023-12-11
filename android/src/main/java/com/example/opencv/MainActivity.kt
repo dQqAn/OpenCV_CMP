@@ -10,8 +10,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.platform.LocalContext
 import com.example.common.AndroidActivityViewModel
 import com.example.common.CameraViewModel
-import com.example.common.MainPage
 import com.example.common.StitcherViewModel
+import com.example.common.navigation_native.localContent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
             val context = LocalContext.current
             MaterialTheme {
                 androidActivityViewModel.activity.value = context.getActivity()?.apply {
-                    MainPage(stitcherViewModel, cameraViewModel)
+                    localContent(stitcherViewModel, cameraViewModel)
                 }
             }
         }

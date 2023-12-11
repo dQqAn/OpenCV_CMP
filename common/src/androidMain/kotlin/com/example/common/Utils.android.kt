@@ -6,8 +6,12 @@ import androidx.compose.runtime.Composable
 
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
-actual fun CameraPage(stitcherViewModel: StitcherViewModel, cameraViewModel: CameraViewModel) {
-    CameraAndroidPage(cameraViewModel)
+actual fun CameraPageContent(
+    stitcherViewModel: StitcherViewModel,
+    cameraViewModel: CameraViewModel,
+    onBackClick: () -> Unit
+) {
+    CameraAndroidPage(cameraViewModel, onBackClick)
 }
 
 actual typealias CameraViewModel = AndroidCameraViewModel

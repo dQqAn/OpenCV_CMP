@@ -44,6 +44,10 @@ sealed class StitcherOutput {
 }
 
 @Composable
-expect fun CameraPage(stitcherViewModel: StitcherViewModel, cameraViewModel: CameraViewModel)
+expect fun CameraPageContent(
+    stitcherViewModel: StitcherViewModel,
+    cameraViewModel: CameraViewModel,
+    onBackClick: () -> Unit
+)
 
 expect class CameraViewModel

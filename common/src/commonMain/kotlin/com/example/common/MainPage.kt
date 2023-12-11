@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
-@Composable
+/*@Composable
 fun MainPage(
     stitcherViewModel: StitcherViewModel,
     cameraViewModel: CameraViewModel
@@ -57,13 +57,15 @@ private fun MainContent(
             MainPageContent(stitcherViewModel)
 
         } else {
-            CameraPage(stitcherViewModel, cameraViewModel)
+            CameraPageContent(stitcherViewModel, cameraViewModel)
         }
     }
-}
+}*/
 
 @Composable
-fun MainPageContent(stitcherViewModel: StitcherViewModel) {
+fun MainPageContent(stitcherViewModel: StitcherViewModel, onCameraPageClick: () -> Unit) {
+
+    stitcherViewModel.chooseImages()
 
     val radioOptions = listOf("Scans", "Panorama")
 
@@ -81,6 +83,14 @@ fun MainPageContent(stitcherViewModel: StitcherViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        Button(
+            onClick = {
+                onCameraPageClick()
+            }
+        ) {
+            Text("Camera Page")
+        }
+
         Row {
             radioOptions.forEachIndexed { index, text ->
                 SelectOptionsCheckout(

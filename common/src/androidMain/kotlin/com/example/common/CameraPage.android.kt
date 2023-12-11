@@ -67,7 +67,8 @@ import kotlin.coroutines.suspendCoroutine
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraAndroidPage(
-    cameraViewModel: CameraViewModel
+    cameraViewModel: CameraViewModel,
+    onBackClick: () -> Unit
 ) {
 
     val multiplePermissionsState = rememberMultiplePermissionsState(
@@ -79,7 +80,7 @@ fun CameraAndroidPage(
         )
     )
     if (multiplePermissionsState.allPermissionsGranted) {
-        CameraContent(cameraViewModel)
+        CameraContent(cameraViewModel, onBackClick)
     } else {
         Button(
             onClick = {
@@ -95,15 +96,29 @@ fun CameraAndroidPage(
 @RequiresApi(Build.VERSION_CODES.P)
 @Composable
 private fun CameraContent(
-    cameraViewModel: CameraViewModel
+    cameraViewModel: CameraViewModel,
+    onBackClick: () -> Unit
 ) {
-    CameraView(onImageCaptured = { uri, fromGallery ->
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Button(
+            onClick = {
+                onBackClick()
+            }
+        ) {
+            Text("Main Page")
+        }
 
-    }, onError = { imageCaptureException ->
-        println(imageCaptureException)
-    },
-        cameraViewModel = cameraViewModel
-    )
+        CameraView(onImageCaptured = { uri, fromGallery ->
+
+        }, onError = { imageCaptureException ->
+            println(imageCaptureException)
+        },
+            cameraViewModel = cameraViewModel
+        )
+    }
 }
 
 @Composable
