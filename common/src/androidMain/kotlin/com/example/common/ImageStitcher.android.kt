@@ -24,12 +24,12 @@ actual class ImageStitcher(
 
     actual fun stitchImages(input: StitcherInput, claheState: Boolean): Single<StitcherOutput> {
         return Single.fromCallable {
-            val files = fileUtil.urisToFiles(input.uris)
-            val vector = filesToMatVector(files, claheState)
             if (getAvailableMemory().lowMemory) {
                 val e = RuntimeException("Can't stitch images: Low memory.")
                 StitcherOutput.Failure(e)
             } else {
+                val files = fileUtil.urisToFiles(input.uris)
+                val vector = filesToMatVector(files, claheState)
                 stitch(vector, input.stitchMode)
             }
         }
@@ -59,8 +59,12 @@ actual class ImageStitcher(
 
             val resultFile = fileUtil.createResultFile()
             imwrite(resultFile.absolutePath, result)
+            result.release()
+            result.close()
             StitcherOutput.Success(resultFile)
         } else {
+            result.release()
+            result.close()
             val e = RuntimeException("Can't stitch images: " + getStatusDescription(status))
             StitcherOutput.Failure(e)
         }
@@ -79,12 +83,13 @@ actual class ImageStitcher(
     private fun filesToMatVector(files: List<File>, claheState: Boolean): MatVector {
         val images = MatVector(files.size.toLong())
 
-        // Before doing something that requires a lot of memory,
-        // check whether the device is in a low memory state.
-        if (!getAvailableMemory().lowMemory) {
-            // Do memory intensive work.
-            if (claheState) {
-                for (i in files.indices) {
+        if (claheState) {
+            for (i in files.indices) {
+                // Before doing something that requires a lot of memory,
+                // check whether the device is in a low memory state.
+                if (!getAvailableMemory().lowMemory) {
+                    // Do memory intensive work.
+
                     //Clahe
 //            val src = opencv_imgcodecs.imread(files[i].absolutePath, IMREAD_GRAYSCALE)
                     val src = opencv_imgcodecs.imread(files[i].absolutePath)
@@ -143,15 +148,23 @@ actual class ImageStitcher(
 //                    clahe.deallocate(true)
 //                clahe.setNull()
                     clahe.close()
-                }
-            } else {
-                for (i in files.indices) {
-                    //normally
-                    images.put(i.toLong(), opencv_imgcodecs.imread(files[i].absolutePath))
+                } else {
+                    println("Low Memory...")
                 }
             }
         } else {
-            println("Low Memory...")
+            for (i in files.indices) {
+                if (!getAvailableMemory().lowMemory) {
+                    // Do memory intensive work.
+                    //normally
+                    val src = opencv_imgcodecs.imread(files[i].absolutePath)
+                    images.put(i.toLong(), src)
+                    src.release()
+                    src.close()
+                } else {
+                    println("Low Memory...")
+                }
+            }
         }
         return images
     }
