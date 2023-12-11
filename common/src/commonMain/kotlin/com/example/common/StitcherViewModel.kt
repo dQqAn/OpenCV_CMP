@@ -32,6 +32,16 @@ class StitcherViewModel(
         claheState.value = state
     }
 
+    internal val pyTorchState: MutableState<Boolean> = mutableStateOf(false)
+    internal fun changePtTorchState(state: Boolean) {
+        pyTorchState.value = state
+    }
+
+    internal val maxFirstScoreText: MutableState<String?> = mutableStateOf(null)
+    internal val maxSecondScoreText: MutableState<String?> = mutableStateOf(null)
+    internal val classNameFirstText: MutableState<String?> = mutableStateOf(null)
+    internal val classNameSecondText: MutableState<String?> = mutableStateOf(null)
+
     init {
         //https://answers.opencv.org/question/129623/hello-trying-to-create-a-cvmat-got-insufficient-memory/
 //        setUpStitcher()
@@ -58,7 +68,14 @@ class StitcherViewModel(
                 processError(it)
             })*/
 
+        isOpenGallery.value = true
         outputFile.value = null
+        imageBitmap.value = null
+        maxFirstScoreText.value = null
+        classNameFirstText.value = null
+        maxSecondScoreText.value = null
+        classNameSecondText.value = null
+
         compositeDisposables.clear()
         compositeDisposables.add(
             fileUtil.stitcherInputRelay.switchMapSingle { stitcherInput ->
@@ -109,6 +126,15 @@ class StitcherViewModel(
             is StitcherOutput.Success -> {
                 outputFile.value = output.file
                 showImage(output.file, imageBitmap)
+                if (pyTorchState.value) {
+                    fileUtil.PyTorchTexts(
+                        output.file,
+                        maxFirstScoreText,
+                        maxSecondScoreText,
+                        classNameFirstText,
+                        classNameSecondText
+                    )
+                }
             }
 
             is StitcherOutput.Failure -> {
@@ -122,11 +148,7 @@ class StitcherViewModel(
         imageBitmap: MutableState<ImageBitmap?>
     ) {
         fileUtil.showImage(file, imageBitmap)
-    }
-
-    @Composable
-    fun showPyTorchTexts() {
-        fileUtil.PyTorchTexts(outputFile.value)
+        outputFile.value = null
     }
 
     override fun onCleared() {

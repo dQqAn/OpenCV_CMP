@@ -154,8 +154,13 @@ actual class FileUtil(
         private const val JPG_EXTENSION = ".jpg"
     }
 
-    @Composable
-    actual fun PyTorchTexts(outputFile: File?) {
+    actual fun PyTorchTexts(
+        outputFile: File?,
+        maxFirstScoreText: MutableState<String?>,
+        maxSecondScoreText: MutableState<String?>,
+        classNameFirstText: MutableState<String?>,
+        classNameSecondText: MutableState<String?>
+    ) {
 
     }
 }

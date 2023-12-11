@@ -23,8 +23,13 @@ expect class FileUtil {
     fun processImages(uris: List<Any?>, isScansChecked: Boolean)
     val stitcherInputRelay: PublishSubject<StitcherInput>
 
-    @Composable
-    fun PyTorchTexts(outputFile: File?)
+    fun PyTorchTexts(
+        outputFile: File?,
+        maxFirstScoreText: MutableState<String?>,
+        maxSecondScoreText: MutableState<String?>,
+        classNameFirstText: MutableState<String?>,
+        classNameSecondText: MutableState<String?>
+    )
 }
 
 expect class ImageStitcher {

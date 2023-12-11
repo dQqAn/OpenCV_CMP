@@ -101,14 +101,18 @@ fun MainPageContent(stitcherViewModel: StitcherViewModel) {
                 checked = stitcherViewModel.claheState.value,
                 onCheckedChange = { stitcherViewModel.changeClaheState(it) },
             )
+            Spacer(Modifier.width(10.dp))
+            Text("Use PyTorch")
+            Spacer(Modifier.width(5.dp))
+            Checkbox(
+                checked = stitcherViewModel.pyTorchState.value,
+                onCheckedChange = { stitcherViewModel.changePtTorchState(it) },
+            )
         }
 
         Button(
             onClick = {
                 stitcherViewModel.isScansChecked.value = selectedOption == "Scans"
-                stitcherViewModel.isOpenGallery.value = true
-                stitcherViewModel.outputFile.value = null
-                stitcherViewModel.imageBitmap.value = null
                 stitcherViewModel.setUpStitcher()
             }
         ) {
@@ -119,7 +123,17 @@ fun MainPageContent(stitcherViewModel: StitcherViewModel) {
             Image(bitmap = it, contentDescription = null)
 
             //PyTorch is only for Android.
-//            stitcherViewModel.showPyTorchTexts()
+            if (stitcherViewModel.pyTorchState.value
+                && stitcherViewModel.maxFirstScoreText.value != null
+                && stitcherViewModel.classNameFirstText.value != null
+                && stitcherViewModel.maxSecondScoreText.value != null
+                && stitcherViewModel.classNameSecondText.value != null
+            ) {
+                Text(stitcherViewModel.maxFirstScoreText.value!!)
+                Text(stitcherViewModel.classNameFirstText.value!!)
+                Text(stitcherViewModel.maxSecondScoreText.value!!)
+                Text(stitcherViewModel.classNameSecondText.value!!)
+            }
         }
     }
 }

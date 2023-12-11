@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Environment.DIRECTORY_PICTURES
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
@@ -78,6 +77,7 @@ actual class FileUtil(
         imageBitmap: MutableState<ImageBitmap?>
     ) {
         imageBitmap.value = BitmapFactory.decodeFile(file.absolutePath).asImageBitmap()
+//        file.delete()
     }
 
     actual fun processImages(uris: List<Any?>, isScansChecked: Boolean) {
@@ -164,8 +164,13 @@ actual class FileUtil(
         private const val CHOOSE_IMAGES = 777
     }
 
-    @Composable
-    actual fun PyTorchTexts(outputFile: File?) {
+    actual fun PyTorchTexts(
+        outputFile: File?,
+        maxFirstScoreText: MutableState<String?>,
+        maxSecondScoreText: MutableState<String?>,
+        classNameFirstText: MutableState<String?>,
+        classNameSecondText: MutableState<String?>
+    ) {
 //        val bitmap = BitmapFactory.decodeStream(context.assets.open("image.jpg"))
 
         outputFile?.let {
@@ -178,7 +183,7 @@ actual class FileUtil(
             )
 
             val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
-            val scores = outputTensor.dataAsFloatArray
+            var scores = outputTensor.dataAsFloatArray
 
             var maxScore: Float = 0F
             var maxScoreIdx = -1
@@ -197,15 +202,22 @@ actual class FileUtil(
             val className = ImageNetClasses().IMAGENET_CLASSES[maxScoreIdx]
             val className2 = ImageNetClasses().IMAGENET_CLASSES[maxSecondScoreIdx]
 
-            Text("Score: $maxScore")
-            Text("Result: $className")
-            Text("Score: $maxSecondScore")
-            Text("Result: $className2")
+            maxFirstScoreText.value = maxScore.toString()
+            classNameFirstText.value = className
+            maxSecondScoreText.value = maxSecondScoreIdx.toString()
+            classNameSecondText.value = className2
+
+//            Text("Score: $maxScore")
+//            Text("Result: $className")
+//            Text("Score: $maxSecondScore")
+//            Text("Result: $className2")
 
             module.destroy()
-            scores.dropWhile {
+            scores = scores.dropWhile {
                 scores.isNotEmpty()
-            }
+            }.toFloatArray()
+
+            outputFile.delete()
         }
     }
 
