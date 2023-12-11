@@ -1,5 +1,6 @@
 package com.example.common
 
+import android.app.ActivityManager
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -173,51 +174,55 @@ actual class FileUtil(
     ) {
 //        val bitmap = BitmapFactory.decodeStream(context.assets.open("image.jpg"))
 
-        outputFile?.let {
-            val bitmap = BitmapFactory.decodeFile(it.absolutePath)
-            val module = Module.load(assetFilePath(context, "resnet.pt"))
+        if (!getAvailableMemory().lowMemory) {
+            outputFile?.let {
+                val bitmap = BitmapFactory.decodeFile(it.absolutePath)
+                val module = Module.load(assetFilePath(context, "resnet.pt"))
 
-            val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(
-                bitmap,
-                TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB
-            )
+                val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(
+                    bitmap,
+                    TensorImageUtils.TORCHVISION_NORM_MEAN_RGB, TensorImageUtils.TORCHVISION_NORM_STD_RGB
+                )
 
-            val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
-            var scores = outputTensor.dataAsFloatArray
+                val outputTensor = module.forward(IValue.from(inputTensor)).toTensor()
+                var scores = outputTensor.dataAsFloatArray
 
-            var maxScore: Float = 0F
-            var maxScoreIdx = -1
-            var maxSecondScore: Float = 0F
-            var maxSecondScoreIdx = -1
+                var maxScore: Float = 0F
+                var maxScoreIdx = -1
+                var maxSecondScore: Float = 0F
+                var maxSecondScoreIdx = -1
 
-            for (i in scores.indices) {
-                if (scores[i] > maxScore) {
-                    maxSecondScore = maxScore
-                    maxSecondScoreIdx = maxScoreIdx
-                    maxScore = scores[i]
-                    maxScoreIdx = i
+                for (i in scores.indices) {
+                    if (scores[i] > maxScore) {
+                        maxSecondScore = maxScore
+                        maxSecondScoreIdx = maxScoreIdx
+                        maxScore = scores[i]
+                        maxScoreIdx = i
+                    }
                 }
-            }
 
-            val className = ImageNetClasses().IMAGENET_CLASSES[maxScoreIdx]
-            val className2 = ImageNetClasses().IMAGENET_CLASSES[maxSecondScoreIdx]
+                val className = ImageNetClasses().IMAGENET_CLASSES[maxScoreIdx]
+                val className2 = ImageNetClasses().IMAGENET_CLASSES[maxSecondScoreIdx]
 
-            maxFirstScoreText.value = maxScore.toString()
-            classNameFirstText.value = className
-            maxSecondScoreText.value = maxSecondScoreIdx.toString()
-            classNameSecondText.value = className2
+                maxFirstScoreText.value = maxScore.toString()
+                classNameFirstText.value = className
+                maxSecondScoreText.value = maxSecondScoreIdx.toString()
+                classNameSecondText.value = className2
 
 //            Text("Score: $maxScore")
 //            Text("Result: $className")
 //            Text("Score: $maxSecondScore")
 //            Text("Result: $className2")
 
-            module.destroy()
-            scores = scores.dropWhile {
-                scores.isNotEmpty()
-            }.toFloatArray()
+                module.destroy()
+                scores = scores.dropWhile {
+                    scores.isNotEmpty()
+                }.toFloatArray()
 
-            outputFile.delete()
+                outputFile.delete()
+            }
+        }else{
+            println("Low memory...")
         }
     }
 
@@ -237,6 +242,14 @@ actual class FileUtil(
                 outputStream.close()
             }
             return file.absolutePath
+        }
+    }
+
+    // Get a MemoryInfo object for the device's current memory status.
+    private fun getAvailableMemory(): ActivityManager.MemoryInfo {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        return ActivityManager.MemoryInfo().also { memoryInfo ->
+            activityManager.getMemoryInfo(memoryInfo)
         }
     }
 }
