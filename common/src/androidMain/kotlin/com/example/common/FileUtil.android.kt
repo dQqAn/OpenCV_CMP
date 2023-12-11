@@ -2,6 +2,7 @@ package com.example.common
 
 import android.app.ActivityManager
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment.DIRECTORY_PICTURES
@@ -163,6 +164,7 @@ actual class FileUtil(
         private const val EXTRA_ALLOW_MULTIPLE = "android.intent.extra.ALLOW_MULTIPLE"
         private const val INTENT_IMAGE_TYPE = "image/*"
         private const val CHOOSE_IMAGES = 777
+        private const val INPUT_SIZE = 224
     }
 
     actual fun PyTorchTexts(
@@ -176,8 +178,10 @@ actual class FileUtil(
 
         if (!getAvailableMemory().lowMemory) {
             outputFile?.let {
-                val bitmap = BitmapFactory.decodeFile(it.absolutePath)
+                var bitmap = BitmapFactory.decodeFile(it.absolutePath)
                 val module = Module.load(assetFilePath(context, "resnet.pt"))
+
+                bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false)
 
                 val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(
                     bitmap,
