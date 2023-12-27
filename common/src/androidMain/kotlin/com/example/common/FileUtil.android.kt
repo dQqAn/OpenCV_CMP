@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Environment.DIRECTORY_PICTURES
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -40,14 +41,23 @@ actual class FileUtil(
     ) {
         //https://github.com/bytedeco/javacv/issues/1127#issuecomment-619118652
 
-        val multiplePermissionsState = rememberMultiplePermissionsState(
-            listOf(
-                android.Manifest.permission.CAMERA,
-                android.Manifest.permission.RECORD_AUDIO,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+        val multiplePermissionsState = if (Build.VERSION.SDK_INT >= 30) {
+            rememberMultiplePermissionsState(
+                listOf(
+                    android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.RECORD_AUDIO,
+                )
             )
-        )
+        } else {
+            rememberMultiplePermissionsState(
+                listOf(
+                    android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.RECORD_AUDIO,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                )
+            )
+        }
 
         val launcher =
             rememberLauncherForActivityResult(ActivityResultContracts.GetMultipleContents()) {//ActivityResultContracts.TakePicturePreview()

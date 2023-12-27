@@ -11,7 +11,6 @@ import android.webkit.MimeTypeMap
 import android.widget.ImageView
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.camera.camera2.interop.ExperimentalCamera2Interop
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -62,8 +61,6 @@ import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-
-@RequiresApi(Build.VERSION_CODES.P)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraAndroidPage(
@@ -71,14 +68,24 @@ fun CameraAndroidPage(
     onBackClick: () -> Unit
 ) {
 
-    val multiplePermissionsState = rememberMultiplePermissionsState(
-        listOf(
-            android.Manifest.permission.CAMERA,
-            android.Manifest.permission.RECORD_AUDIO,
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+    val multiplePermissionsState = if (Build.VERSION.SDK_INT >= 30) {
+        rememberMultiplePermissionsState(
+            listOf(
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.RECORD_AUDIO,
+            )
         )
-    )
+    } else {
+        rememberMultiplePermissionsState(
+            listOf(
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.RECORD_AUDIO,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            )
+        )
+    }
+
     if (multiplePermissionsState.allPermissionsGranted) {
         CameraContent(cameraViewModel, onBackClick)
     } else {
@@ -93,7 +100,6 @@ fun CameraAndroidPage(
 }
 
 @androidx.annotation.OptIn(ExperimentalCamera2Interop::class)
-@RequiresApi(Build.VERSION_CODES.P)
 @Composable
 private fun CameraContent(
     cameraViewModel: CameraViewModel,
