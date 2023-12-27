@@ -85,7 +85,7 @@ kotlin {
                 implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-arm64")
                 implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-arm")
                 implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-x86")
-//                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-x86_64")
+                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-x86_64")
 
                 // https://mvnrepository.com/artifact/org.bytedeco/opencv
 //                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-x86")
