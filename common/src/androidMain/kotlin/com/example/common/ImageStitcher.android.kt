@@ -11,6 +11,7 @@ import org.bytedeco.javacpp.opencv_core.MatVector
 import org.bytedeco.javacpp.opencv_imgcodecs
 import org.bytedeco.javacpp.opencv_imgcodecs.imwrite
 import org.bytedeco.javacpp.opencv_imgproc
+import org.bytedeco.javacpp.opencv_imgproc.resize
 import org.bytedeco.javacpp.opencv_stitching.Stitcher
 import org.bytedeco.javacpp.opencv_stitching.Stitcher.*
 import java.io.File
@@ -98,7 +99,7 @@ actual class ImageStitcher(
 
                     val clahe = opencv_imgproc.createCLAHE(2.0, opencv_core.Size(8, 8))
 
-//           resize(src,src,opencv_core.Size(500,600))
+                    resize(src, src, opencv_core.Size(1000, 800))
 
                     val newMat = opencv_core.Mat()
                     val newVector = MatVector(newMat)
@@ -158,6 +159,7 @@ actual class ImageStitcher(
                     // Do memory intensive work.
                     //normally
                     val src = opencv_imgcodecs.imread(files[i].absolutePath)
+                    resize(src, src, opencv_core.Size(1000, 800))
                     images.put(i.toLong(), src)
                     src.release()
                     src.close()
