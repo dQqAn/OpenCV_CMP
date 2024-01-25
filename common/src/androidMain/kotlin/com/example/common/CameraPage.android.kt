@@ -44,8 +44,9 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.bytedeco.javacpp.Loader
-import org.bytedeco.javacpp.opencv_imgproc
-import org.bytedeco.javacpp.opencv_java
+import org.bytedeco.opencv.global.opencv_imgproc.CV_BGR2Lab
+import org.bytedeco.opencv.global.opencv_imgproc.CV_Lab2BGR
+import org.bytedeco.opencv.opencv_java
 import org.opencv.android.Utils.bitmapToMat
 import org.opencv.android.Utils.matToBitmap
 import org.opencv.core.Core.merge
@@ -317,11 +318,11 @@ private fun clahe(mat: Mat): Mat {
     val clahe = createCLAHE(2.0, Size(8.0, 8.0))
     val vectors = mutableListOf<Mat>()
 //    Converters.Mat_to_vector_Mat(mat, vectors)
-    cvtColor(mat, mat, opencv_imgproc.CV_BGR2Lab)
+    cvtColor(mat, mat, CV_BGR2Lab)
     split(mat, vectors)
     clahe.apply(vectors[0], vectors[0])
     merge(vectors, mat)
-    cvtColor(mat, mat, opencv_imgproc.CV_Lab2BGR)
+    cvtColor(mat, mat, CV_Lab2BGR)
     return mat
 }
 

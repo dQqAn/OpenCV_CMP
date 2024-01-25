@@ -6,7 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import io.reactivex.rxjava3.subjects.PublishSubject
-import org.bytedeco.javacpp.opencv_stitching
+import org.bytedeco.opencv.opencv_stitching.Stitcher
 import java.awt.image.BufferedImage
 import java.io.*
 import java.net.URI
@@ -82,7 +82,7 @@ actual class FileUtil(
     }
 
     actual fun processImages(uris: List<Any?>, isScansChecked: Boolean) {
-        val stitchMode = if (isScansChecked) opencv_stitching.Stitcher.SCANS else opencv_stitching.Stitcher.PANORAMA
+        val stitchMode = if (isScansChecked) Stitcher.SCANS else Stitcher.PANORAMA
         if (uris.filterIsInstance<URI>().isNotEmpty()) {
 //            println(uris.filterIsInstance<Uri>())
             stitcherInputRelay.onNext(StitcherInput(uris.filterIsInstance<URI>(), stitchMode))

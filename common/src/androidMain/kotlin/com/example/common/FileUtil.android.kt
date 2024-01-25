@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import io.reactivex.rxjava3.subjects.PublishSubject
-import org.bytedeco.javacpp.opencv_stitching
+import org.bytedeco.opencv.opencv_stitching.Stitcher
 import org.pytorch.IValue
 import org.pytorch.Module
 import org.pytorch.torchvision.TensorImageUtils
@@ -93,7 +93,7 @@ actual class FileUtil(
     }
 
     actual fun processImages(uris: List<Any?>, isScansChecked: Boolean) {
-        val stitchMode = if (isScansChecked) opencv_stitching.Stitcher.SCANS else opencv_stitching.Stitcher.PANORAMA
+        val stitchMode = if (isScansChecked) Stitcher.SCANS else Stitcher.PANORAMA
         if (uris.filterIsInstance<Uri>().isNotEmpty()) {
             stitcherInputRelay.onNext(StitcherInput(uris.filterIsInstance<Uri>(), stitchMode))
             uris.dropWhile {

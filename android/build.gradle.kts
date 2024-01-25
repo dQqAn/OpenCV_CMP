@@ -40,4 +40,8 @@ android {
     kotlin {
         jvmToolchain(17)
     }
+
+    packagingOptions {
+        resources.excludes += "META-INF/native-image/**"
+    }
 }

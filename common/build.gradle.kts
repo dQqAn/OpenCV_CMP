@@ -47,8 +47,10 @@ kotlin {
                 api(compose.materialIconsExtended)
 
                 // https://mvnrepository.com/artifact/org.bytedeco/javacv
-                implementation("org.bytedeco:javacv:1.4.4")
-//                implementation("org.bytedeco:javacv:1.5.9")
+//                implementation("org.bytedeco:javacv:1.4.4")
+                implementation("org.bytedeco:javacv:1.5.9")
+                // https://mvnrepository.com/artifact/org.bytedeco/javacpp
+                implementation("org.bytedeco:javacpp:1.5.9")
 
                 runtimeOnly("io.insert-koin:koin-core:3.4.2")// https://mvnrepository.com/artifact/io.insert-koin/koin-core
                 implementation("io.insert-koin:koin-core-coroutines:3.4.1")// https://mvnrepository.com/artifact/io.insert-koin/koin-core-coroutines
@@ -82,16 +84,38 @@ kotlin {
                 implementation("androidx.camera:camera-view:${cameraxVersion}")
                 implementation("androidx.camera:camera-extensions:${cameraxVersion}")
 
-                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-arm64")
-                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-arm")
-                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-x86")
-                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-x86_64")
+                // https://mvnrepository.com/artifact/org.bytedeco/javacpp-platform
+//                implementation("org.bytedeco:javacpp-platform:1.5.9")
+//                implementation("org.bytedeco:javacpp-platform:1.5.9:android-arm64")
+//                implementation("org.bytedeco:javacpp-platform:1.5.9:android-arm")
+//                implementation("org.bytedeco:javacpp-platform:1.5.9:android-x86")
+//                implementation("org.bytedeco:javacpp-platform:1.5.9:android-x86_64")
+
+                // https://mvnrepository.com/artifact/org.bytedeco/javacv-platform
+//                implementation("org.bytedeco:javacv-platform:1.5.9")
+
+//                implementation("org.bytedeco:javacpp:1.5.9:android-arm64")
+//                implementation("org.bytedeco:javacpp:1.5.9:android-arm")
+//                implementation("org.bytedeco:javacpp:1.5.9:android-x86")
+//                implementation("org.bytedeco:javacpp:1.5.9:android-x86_64")
+
+//                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-arm64")
+//                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-arm")
+//                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-x86")
+//                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:android-x86_64")
 
                 // https://mvnrepository.com/artifact/org.bytedeco/opencv
-//                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-x86")
-//                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-x86_64")
-//                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-arm64")
-//                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-arm")
+                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-x86")
+                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-x86_64")
+                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-arm64")
+                implementation("org.bytedeco:opencv:4.7.0-1.5.9:android-arm")
+
+                // https://mvnrepository.com/artifact/org.bytedeco/openblas
+//                implementation("org.bytedeco:openblas:0.3.23-1.5.9")
+                implementation("org.bytedeco:openblas:0.3.23-1.5.9:android-x86")
+                implementation("org.bytedeco:openblas:0.3.23-1.5.9:android-x86_64")
+                implementation("org.bytedeco:openblas:0.3.23-1.5.9:android-arm64")
+                implementation("org.bytedeco:openblas:0.3.23-1.5.9:android-arm")
 
                 // https://mvnrepository.com/artifact/org.pytorch/pytorch_android
                 implementation("org.pytorch:pytorch_android:2.1.0")
@@ -103,11 +127,14 @@ kotlin {
             dependencies {
                 api(compose.preview)
 
-                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:windows-x86")
-                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:windows-x86_64")
+//                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:windows-x86")
+//                implementation("org.bytedeco.javacpp-presets:opencv:4.0.1-1.4.4:windows-x86_64")
 
-//                implementation("org.bytedeco:opencv:4.7.0-1.5.9:windows-x86_64")
-//                implementation("org.bytedeco:opencv:4.7.0-1.5.9:windows-x86")
+                implementation("org.bytedeco:opencv:4.7.0-1.5.9:windows-x86")
+                implementation("org.bytedeco:opencv:4.7.0-1.5.9:windows-x86_64")
+
+                implementation("org.bytedeco:openblas:0.3.23-1.5.9:windows-x86")
+                implementation("org.bytedeco:openblas:0.3.23-1.5.9:windows-x86_64")
             }
         }
         /*val iosMain by creating {
