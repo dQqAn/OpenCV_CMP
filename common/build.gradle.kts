@@ -52,8 +52,8 @@ kotlin {
                 // https://mvnrepository.com/artifact/org.bytedeco/javacpp
                 implementation("org.bytedeco:javacpp:1.5.9")
 
-                runtimeOnly("io.insert-koin:koin-core:3.4.2")// https://mvnrepository.com/artifact/io.insert-koin/koin-core
-                implementation("io.insert-koin:koin-core-coroutines:3.4.1")// https://mvnrepository.com/artifact/io.insert-koin/koin-core-coroutines
+                runtimeOnly("io.insert-koin:koin-core:3.5.3")// https://mvnrepository.com/artifact/io.insert-koin/koin-core
+                implementation("io.insert-koin:koin-core-coroutines:3.5.3")// https://mvnrepository.com/artifact/io.insert-koin/koin-core-coroutines
 
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class) implementation(compose.components.resources)
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")//https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
@@ -64,12 +64,12 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 // https://mvnrepository.com/artifact/androidx.activity/activity-compose
-                implementation("androidx.activity:activity-compose:1.7.2")
+                implementation("androidx.activity:activity-compose:1.8.2")
 
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.12.0")
 
-                implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")// https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-viewmodel-compose
+                implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")// https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-viewmodel-compose
 
                 // https://mvnrepository.com/artifact/io.reactivex.rxjava3/rxjava
 //                implementation("io.reactivex.rxjava3:rxjava:3.1.8")
