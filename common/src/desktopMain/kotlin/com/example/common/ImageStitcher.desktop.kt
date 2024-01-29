@@ -19,7 +19,7 @@ import java.net.URI
 actual class StitcherInput(val uris: List<URI>, val stitchMode: Int)
 
 actual class ImageStitcher(
-    private val fileUtil: FileUtil
+    private val fileUtil: FileUtil,
 ) {
     actual fun stitchImages(input: StitcherInput, claheState: Boolean): Single<StitcherOutput> {
         return Single.fromCallable {

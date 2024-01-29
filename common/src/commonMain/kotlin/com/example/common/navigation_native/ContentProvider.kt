@@ -18,7 +18,7 @@ import com.example.common.StitcherViewModel
 @Composable
 fun BoxWithConstraintsScope.contentProvider(
     stitcherViewModel: StitcherViewModel,
-    cameraViewModel: CameraViewModel
+    cameraViewModel: CameraViewModel,
 ) {
     val navigationStack = rememberSaveable(
         saver = listSaver<NavigationStack<Page>, Page>(
@@ -67,7 +67,7 @@ fun BoxWithConstraintsScope.contentProvider(
 @Composable
 fun localContent(
     stitcherViewModel: StitcherViewModel,
-    cameraViewModel: CameraViewModel
+    cameraViewModel: CameraViewModel,
 ) {
     BoxWithConstraints {
         contentProvider(stitcherViewModel, cameraViewModel)

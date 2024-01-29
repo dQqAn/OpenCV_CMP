@@ -66,7 +66,7 @@ import kotlin.coroutines.suspendCoroutine
 @Composable
 fun CameraAndroidPage(
     cameraViewModel: CameraViewModel,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
 
     val multiplePermissionsState = if (Build.VERSION.SDK_INT >= 30) {
@@ -104,7 +104,7 @@ fun CameraAndroidPage(
 @Composable
 private fun CameraContent(
     cameraViewModel: CameraViewModel,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -132,7 +132,7 @@ private fun CameraContent(
 fun CameraView(
     onImageCaptured: (Uri, Boolean) -> Unit,
     onError: (ImageCaptureException) -> Unit,
-    cameraViewModel: CameraViewModel
+    cameraViewModel: CameraViewModel,
 ) {
 
     val context = LocalContext.current
@@ -202,7 +202,7 @@ private fun CameraPreviewView(
     imageCapture: ImageCapture,
     lensFacing: Int = CameraSelector.LENS_FACING_FRONT,
     cameraViewModel: CameraViewModel,
-    cameraUIAction: (CameraUIAction) -> Unit
+    cameraUIAction: (CameraUIAction) -> Unit,
 ) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -424,7 +424,7 @@ fun CameraControl(
     imageVector: ImageVector,
     contentDescId: Int,
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     IconButton(
         onClick = onClick,
@@ -445,7 +445,7 @@ fun ImageCapture.takePicture(
     lensFacing: Int,
     onImageCaptured: (Uri, Boolean) -> Unit,
     onError: (ImageCaptureException) -> Unit,
-    cameraViewModel: CameraViewModel
+    cameraViewModel: CameraViewModel,
 ) {
     val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
     val PHOTO_EXTENSION = ".png"
@@ -599,7 +599,7 @@ fun ImageCapture.takePicture(
 
 fun getOutputFileOptions(
     lensFacing: Int,
-    photoFile: File
+    photoFile: File,
 ): ImageCapture.OutputFileOptions {
 
     // Setup image capture metadata

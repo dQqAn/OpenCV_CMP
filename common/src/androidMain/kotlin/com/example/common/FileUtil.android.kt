@@ -37,7 +37,7 @@ actual class FileUtil(
     actual fun chooseImages(
         openGallery: MutableState<Boolean>,
         isScansChecked: MutableState<Boolean>,
-        outputFile: MutableState<File?>
+        outputFile: MutableState<File?>,
     ) {
         //https://github.com/bytedeco/javacv/issues/1127#issuecomment-619118652
 
@@ -86,7 +86,7 @@ actual class FileUtil(
 
     actual fun showImage(
         file: File,
-        imageBitmap: MutableState<ImageBitmap?>
+        imageBitmap: MutableState<ImageBitmap?>,
     ) {
         imageBitmap.value = BitmapFactory.decodeFile(file.absolutePath).asImageBitmap()
 //        file.delete()
@@ -182,7 +182,7 @@ actual class FileUtil(
         maxFirstScoreText: MutableState<String?>,
         maxSecondScoreText: MutableState<String?>,
         classNameFirstText: MutableState<String?>,
-        classNameSecondText: MutableState<String?>
+        classNameSecondText: MutableState<String?>,
     ) {
 //        val bitmap = BitmapFactory.decodeStream(context.assets.open("image.jpg"))
 

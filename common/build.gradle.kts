@@ -76,7 +76,7 @@ kotlin {
 
                 implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
 
-                val cameraxVersion = "1.3.0"
+                val cameraxVersion = "1.3.1"
                 implementation("androidx.camera:camera-core:${cameraxVersion}")
                 implementation("androidx.camera:camera-camera2:${cameraxVersion}")
                 implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")

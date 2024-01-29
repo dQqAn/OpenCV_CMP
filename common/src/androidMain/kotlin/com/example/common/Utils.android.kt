@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 actual fun CameraPageContent(
     stitcherViewModel: StitcherViewModel,
     cameraViewModel: CameraViewModel,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
     CameraAndroidPage(cameraViewModel, onBackClick)
 }

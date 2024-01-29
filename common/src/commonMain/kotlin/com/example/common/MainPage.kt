@@ -161,7 +161,7 @@ fun CheckboxResource(isSelected: Boolean): ImageVector {
 fun SelectOptionsCheckout(
     text: String,
     isSelectedOption: Boolean,
-    onSelectOption: (String) -> Unit
+    onSelectOption: (String) -> Unit,
 ) {
     Text(text)
     Icon(

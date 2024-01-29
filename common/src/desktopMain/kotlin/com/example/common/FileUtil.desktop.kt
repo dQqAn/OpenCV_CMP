@@ -26,7 +26,7 @@ actual class FileUtil(
     actual fun chooseImages(
         openGallery: MutableState<Boolean>,
         isScansChecked: MutableState<Boolean>,
-        outputFile: MutableState<File?>
+        outputFile: MutableState<File?>,
     ) {
 
         LaunchedEffect(openGallery.value) {
@@ -73,7 +73,7 @@ actual class FileUtil(
 
     actual fun showImage(
         file: File,
-        imageBitmap: MutableState<ImageBitmap?>
+        imageBitmap: MutableState<ImageBitmap?>,
     ) {
         val img: BufferedImage? = ImageIO.read(file)
 //        val icon = ImageIcon(img)
@@ -159,7 +159,7 @@ actual class FileUtil(
         maxFirstScoreText: MutableState<String?>,
         maxSecondScoreText: MutableState<String?>,
         classNameFirstText: MutableState<String?>,
-        classNameSecondText: MutableState<String?>
+        classNameSecondText: MutableState<String?>,
     ) {
 
     }

@@ -12,12 +12,12 @@ expect class FileUtil {
     fun chooseImages(
         openGallery: MutableState<Boolean>,
         isScansChecked: MutableState<Boolean>,
-        outputFile: MutableState<File?>
+        outputFile: MutableState<File?>,
     )
 
     fun showImage(
         file: File,
-        imageBitmap: MutableState<ImageBitmap?>
+        imageBitmap: MutableState<ImageBitmap?>,
     )
 
     fun processImages(uris: List<Any?>, isScansChecked: Boolean)
@@ -28,7 +28,7 @@ expect class FileUtil {
         maxFirstScoreText: MutableState<String?>,
         maxSecondScoreText: MutableState<String?>,
         classNameFirstText: MutableState<String?>,
-        classNameSecondText: MutableState<String?>
+        classNameSecondText: MutableState<String?>,
     )
 }
 
@@ -47,7 +47,7 @@ sealed class StitcherOutput {
 expect fun CameraPageContent(
     stitcherViewModel: StitcherViewModel,
     cameraViewModel: CameraViewModel,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 )
 
 expect class CameraViewModel

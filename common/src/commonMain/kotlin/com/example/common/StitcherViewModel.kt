@@ -11,7 +11,7 @@ import java.io.File
 
 class StitcherViewModel(
     private val fileUtil: FileUtil,
-    private val imageStitcher: ImageStitcher
+    private val imageStitcher: ImageStitcher,
 ) : ViewModel() {
 
     //    private lateinit var disposable: Disposable
@@ -145,7 +145,7 @@ class StitcherViewModel(
 
     private fun showImage(
         file: File,
-        imageBitmap: MutableState<ImageBitmap?>
+        imageBitmap: MutableState<ImageBitmap?>,
     ) {
         fileUtil.showImage(file, imageBitmap)
         outputFile.value = null
