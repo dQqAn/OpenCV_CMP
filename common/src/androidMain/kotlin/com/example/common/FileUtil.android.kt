@@ -220,7 +220,7 @@ actual class FileUtil(
 
                 maxFirstScoreText.value = maxScore.toString()
                 classNameFirstText.value = className
-                maxSecondScoreText.value = maxSecondScoreIdx.toString()
+                maxSecondScoreText.value = maxSecondScore.toString()
                 classNameSecondText.value = className2
 
 //            Text("Score: $maxScore")
@@ -229,6 +229,7 @@ actual class FileUtil(
 //            Text("Result: $className2")
 
                 module.destroy()
+                bitmap.recycle()
                 scores = scores.dropWhile {
                     scores.isNotEmpty()
                 }.toFloatArray()
@@ -255,8 +256,9 @@ actual class FileUtil(
                 outputStream.flush()
                 outputStream.close()
             }
-            return file.absolutePath
+            inputStream.close()
         }
+        return file.absolutePath
     }
 
     // Get a MemoryInfo object for the device's current memory status.
