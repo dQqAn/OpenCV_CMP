@@ -623,8 +623,14 @@ fun createFile(baseFolder: File, format: String, extension: String) =
 
 
 fun Context.getOutputDirectory(): File {
-    val mediaDir = this.externalMediaDirs.firstOrNull()?.let {
-        File(it, "demo").apply { mkdirs() }
+//    val mediaDir = this.externalMediaDirs.firstOrNull()?.let {
+//        File(it, "demo").apply { mkdirs() }
+//    }
+
+//    println(externalCacheDir?.path)
+//    println( getExternalFilesDir("temp")?.path)
+    val mediaDir = getExternalFilesDir("Pictures")?.let {
+        File(it, "Camera").apply { mkdirs() }
     }
     return if (mediaDir != null && mediaDir.exists())
         mediaDir else this.filesDir
