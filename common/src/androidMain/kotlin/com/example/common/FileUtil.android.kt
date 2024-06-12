@@ -88,6 +88,7 @@ actual class FileUtil(
         file: File,
         imageBitmap: MutableState<ImageBitmap?>,
     ) {
+//        println("file: "+file.exists())
         imageBitmap.value = BitmapFactory.decodeFile(file.absolutePath).asImageBitmap()
 //        file.delete()
     }
@@ -122,7 +123,7 @@ actual class FileUtil(
     }
 
     fun cleanUpWorkingDirectory() {
-        requireTemporaryDirectory().Remove()
+//        requireTemporaryDirectory().Remove()
     }
 
     @Throws(IOException::class)
