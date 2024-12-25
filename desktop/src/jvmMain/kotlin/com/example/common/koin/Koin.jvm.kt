@@ -1,6 +1,8 @@
 package com.example.common.koin
 
+import com.example.common.CameraViewModel
 import com.example.common.FileUtil
+import com.example.common.ImageStitcher
 import com.example.common.initKoin
 import org.koin.dsl.module
 
@@ -10,6 +12,10 @@ class DesktopApp {
             single {
                 FileUtil()
             }
+
+            single { ImageStitcher(fileUtil = get()) }
+
+            single { CameraViewModel() }
         }
     )
 }

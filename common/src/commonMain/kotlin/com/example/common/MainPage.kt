@@ -12,26 +12,61 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 
-@Composable
+/*@Composable
 fun MainPage(
-    stitcherViewModel: StitcherViewModel
+    stitcherViewModel: StitcherViewModel,
+    cameraViewModel: CameraViewModel
 ) {
-    MainContent(stitcherViewModel)
+    MainContent(stitcherViewModel, cameraViewModel)
 }
 
 @Composable
 private fun MainContent(
-    stitcherViewModel: StitcherViewModel
+    stitcherViewModel: StitcherViewModel,
+    cameraViewModel: CameraViewModel
 ) {
+    val dummyNavigationState = rememberSaveable { mutableStateOf(true) }
+
+    stitcherViewModel.chooseImages()
+
+    Column(
+        Modifier.selectableGroup().fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Button(
+            onClick = {
+                dummyNavigationState.value = !dummyNavigationState.value
+            }
+        ) {
+            if (dummyNavigationState.value) {
+                Text("Camera Page")
+            } else {
+                Text("Main Page")
+            }
+        }
+
+        if (dummyNavigationState.value) {
+            MainPageContent(stitcherViewModel)
+
+        } else {
+            CameraPageContent(stitcherViewModel, cameraViewModel)
+        }
+    }
+}*/
+
+@Composable
+fun MainPageContent(stitcherViewModel: StitcherViewModel, onCameraPageClick: () -> Unit) {
+
+    stitcherViewModel.chooseImages()
+
     val radioOptions = listOf("Scans", "Panorama")
 
     val (selectedOption: String, onOptionSelected: (String) -> Unit) = rememberSaveable {
@@ -41,15 +76,21 @@ private fun MainContent(
         )
     }
 
-    val imageBitmap: MutableState<ImageBitmap?> = stitcherViewModel.imageBitmap
-
-    stitcherViewModel.chooseImages()
+//    val imageBitmap: MutableState<ImageBitmap?> = stitcherViewModel.imageBitmap
 
     Column(
         Modifier.selectableGroup().fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        Button(
+            onClick = {
+                onCameraPageClick()
+            }
+        ) {
+            Text("Camera Page")
+        }
+
         Row {
             radioOptions.forEachIndexed { index, text ->
                 SelectOptionsCheckout(
@@ -70,19 +111,39 @@ private fun MainContent(
                 checked = stitcherViewModel.claheState.value,
                 onCheckedChange = { stitcherViewModel.changeClaheState(it) },
             )
+            Spacer(Modifier.width(10.dp))
+            Text("Use PyTorch")
+            Spacer(Modifier.width(5.dp))
+            Checkbox(
+                checked = stitcherViewModel.pyTorchState.value,
+                onCheckedChange = { stitcherViewModel.changePtTorchState(it) },
+            )
         }
 
         Button(
             onClick = {
                 stitcherViewModel.isScansChecked.value = selectedOption == "Scans"
-                stitcherViewModel.isOpenGallery.value = true
+                stitcherViewModel.setUpStitcher()
             }
         ) {
             Text("Choose Images")
         }
 
-        imageBitmap.value?.let {
+        stitcherViewModel.imageBitmap.value?.let {
             Image(bitmap = it, contentDescription = null)
+
+            //PyTorch is only for Android.
+            if (stitcherViewModel.pyTorchState.value
+                && stitcherViewModel.maxFirstScoreText.value != null
+                && stitcherViewModel.classNameFirstText.value != null
+                && stitcherViewModel.maxSecondScoreText.value != null
+                && stitcherViewModel.classNameSecondText.value != null
+            ) {
+                Text(stitcherViewModel.maxFirstScoreText.value!!)
+                Text(stitcherViewModel.classNameFirstText.value!!)
+                Text(stitcherViewModel.maxSecondScoreText.value!!)
+                Text(stitcherViewModel.classNameSecondText.value!!)
+            }
         }
     }
 }
@@ -100,7 +161,7 @@ fun CheckboxResource(isSelected: Boolean): ImageVector {
 fun SelectOptionsCheckout(
     text: String,
     isSelectedOption: Boolean,
-    onSelectOption: (String) -> Unit
+    onSelectOption: (String) -> Unit,
 ) {
     Text(text)
     Icon(

@@ -9,7 +9,7 @@ fun initKoin(appModule: Module): KoinApplication = startKoin { modules(coreModul
 
 private val coreModule = module {
 
-    single { ImageStitcher(fileUtil = get()) }
+//    single { ImageStitcher(fileUtil = get()) }
     single {
         StitcherViewModel(
             fileUtil = get(),

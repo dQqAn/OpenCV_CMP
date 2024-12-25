@@ -1,24 +1,28 @@
 plugins {
+    kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("com.android.application")
-    kotlin("android")
 }
 
 group = "com.example"
 version = "1.0-SNAPSHOT"
 
-repositories {
-    mavenCentral()
-}
+kotlin {
+    androidTarget()
+    sourceSets {
+        val androidMain by getting {
+            dependencies {
+                implementation(project(":common"))
+                implementation("androidx.activity:activity-compose:1.8.2")
 
-dependencies {
-    implementation(project(":common"))
-    implementation("androidx.activity:activity-compose:1.8.0")
+                runtimeOnly("io.insert-koin:koin-core:3.5.3")// https://mvnrepository.com/artifact/io.insert-koin/koin-core
+                implementation("io.insert-koin:koin-core-coroutines:3.5.3")// https://mvnrepository.com/artifact/io.insert-koin/koin-core-coroutines
+                implementation("io.insert-koin:koin-androidx-compose:3.5.3")// https://mvnrepository.com/artifact/io.insert-koin/koin-androidx-compose
+                implementation("io.insert-koin:koin-android:3.5.3")// https://mvnrepository.com/artifact/io.insert-koin/koin-android
 
-    runtimeOnly("io.insert-koin:koin-core:3.4.2")// https://mvnrepository.com/artifact/io.insert-koin/koin-core
-    implementation("io.insert-koin:koin-core-coroutines:3.4.1")// https://mvnrepository.com/artifact/io.insert-koin/koin-core-coroutines
-    implementation("io.insert-koin:koin-androidx-compose:3.4.5")// https://mvnrepository.com/artifact/io.insert-koin/koin-androidx-compose
-    implementation("io.insert-koin:koin-android:3.4.2")// https://mvnrepository.com/artifact/io.insert-koin/koin-android
+            }
+        }
+    }
 }
 
 android {
@@ -39,5 +43,9 @@ android {
     }
     kotlin {
         jvmToolchain(17)
+    }
+
+    packaging {
+        resources.excludes += "META-INF/native-image/**"
     }
 }

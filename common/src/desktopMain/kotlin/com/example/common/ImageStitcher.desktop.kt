@@ -2,18 +2,24 @@ package com.example.common
 
 
 import io.reactivex.rxjava3.core.Single
-import org.bytedeco.javacpp.opencv_core
-import org.bytedeco.javacpp.opencv_core.MatVector
-import org.bytedeco.javacpp.opencv_imgcodecs
-import org.bytedeco.javacpp.opencv_imgproc
-import org.bytedeco.javacpp.opencv_stitching
+import org.bytedeco.javacpp.Loader
+import org.bytedeco.opencv.global.opencv_core.merge
+import org.bytedeco.opencv.global.opencv_core.split
+import org.bytedeco.opencv.global.opencv_imgcodecs.imread
+import org.bytedeco.opencv.global.opencv_imgcodecs.imwrite
+import org.bytedeco.opencv.global.opencv_imgproc.*
+import org.bytedeco.opencv.opencv_core.Mat
+import org.bytedeco.opencv.opencv_core.MatVector
+import org.bytedeco.opencv.opencv_core.Size
+import org.bytedeco.opencv.opencv_java
+import org.bytedeco.opencv.opencv_stitching.Stitcher
 import java.io.File
 import java.net.URI
 
 actual class StitcherInput(val uris: List<URI>, val stitchMode: Int)
 
-actual class ImageStitcher actual constructor(
-    private val fileUtil: FileUtil
+actual class ImageStitcher(
+    private val fileUtil: FileUtil,
 ) {
     actual fun stitchImages(input: StitcherInput, claheState: Boolean): Single<StitcherOutput> {
         return Single.fromCallable {
@@ -23,15 +29,15 @@ actual class ImageStitcher actual constructor(
         }
     }
 
-    private fun stitch(vector: opencv_core.MatVector, stitchMode: Int): StitcherOutput {
-        val result = opencv_core.Mat()
-        val stitcher = opencv_stitching.Stitcher.create(stitchMode)
+    private fun stitch(vector: MatVector, stitchMode: Int): StitcherOutput {
+        val result = Mat()
+        val stitcher = Stitcher.create(stitchMode)
         val status = stitcher.stitch(vector, result)
 
         fileUtil.cleanUpWorkingDirectory()
-        return if (status == opencv_stitching.Stitcher.OK) {
+        return if (status == Stitcher.OK) {
             val resultFile = fileUtil.createResultFile()
-            opencv_imgcodecs.imwrite(resultFile.absolutePath, result)
+            imwrite(resultFile.absolutePath, result)
             StitcherOutput.Success(resultFile)
         } else {
             val e = RuntimeException("Can't stitch images: " + getStatusDescription(status))
@@ -42,47 +48,48 @@ actual class ImageStitcher actual constructor(
     @Suppress("SpellCheckingInspection")
     private fun getStatusDescription(status: Int): String {
         return when (status) {
-            opencv_stitching.Stitcher.ERR_NEED_MORE_IMGS -> "ERR_NEED_MORE_IMGS"
-            opencv_stitching.Stitcher.ERR_HOMOGRAPHY_EST_FAIL -> "ERR_HOMOGRAPHY_EST_FAIL"
-            opencv_stitching.Stitcher.ERR_CAMERA_PARAMS_ADJUST_FAIL -> "ERR_CAMERA_PARAMS_ADJUST_FAIL"
+            Stitcher.ERR_NEED_MORE_IMGS -> "ERR_NEED_MORE_IMGS"
+            Stitcher.ERR_HOMOGRAPHY_EST_FAIL -> "ERR_HOMOGRAPHY_EST_FAIL"
+            Stitcher.ERR_CAMERA_PARAMS_ADJUST_FAIL -> "ERR_CAMERA_PARAMS_ADJUST_FAIL"
             else -> "UNKNOWN"
         }
     }
 
-    private fun filesToMatVector(files: List<File>, claheState: Boolean): opencv_core.MatVector {
-        val images = opencv_core.MatVector(files.size.toLong())
+    private fun filesToMatVector(files: List<File>, claheState: Boolean): MatVector {
+        Loader.load(opencv_java::class.java)
+        val images = MatVector(files.size.toLong())
 
         if (claheState) {
             for (i in files.indices) {
                 //Clahe
 //            val src = opencv_imgcodecs.imread(files[i].absolutePath, IMREAD_GRAYSCALE)
-                val src = opencv_imgcodecs.imread(files[i].absolutePath)
+                val src = imread(files[i].absolutePath)
 
 //            val dst = opencv_core.Mat()
 
-                val clahe = opencv_imgproc.createCLAHE(2.0, opencv_core.Size(8, 8))
+                val clahe = createCLAHE(2.0, Size(8, 8))
 
 //           resize(src,src,opencv_core.Size(500,600))
 
-                val newMat = opencv_core.Mat()
+                val newMat = Mat()
                 val newVector = MatVector(newMat)
 //            cvtColor(src, dst, CV_BGR2GRAY)
-                opencv_imgproc.cvtColor(src, src, opencv_imgproc.CV_BGR2Lab)
-                opencv_core.split(src, newVector)
+                cvtColor(src, src, CV_BGR2Lab)
+                split(src, newVector)
 
 
 //            medianBlur(src, src, 3)
 
 //            clahe.apply(src, dst)
                 clahe.apply(newVector[0], newVector[0])
-                opencv_core.merge(newVector, src)
+                merge(newVector, src)
 
 //            if (i==1){
 //                opencv_highgui.imshow("clahe",src)
 //            }
 
 //                opencv_imgproc.cvtColor(src, src, opencv_imgproc.CV_GRAY2BGR)
-                opencv_imgproc.cvtColor(src, src, opencv_imgproc.CV_Lab2BGR)
+                cvtColor(src, src, CV_Lab2BGR)
 
 //            if (i==1){
 //                opencv_highgui.imshow("clahe2",src)
@@ -95,7 +102,7 @@ actual class ImageStitcher actual constructor(
         } else {
             for (i in files.indices) {
                 //normally
-                images.put(i.toLong(), opencv_imgcodecs.imread(files[i].absolutePath))
+                images.put(i.toLong(), imread(files[i].absolutePath))
             }
         }
         return images

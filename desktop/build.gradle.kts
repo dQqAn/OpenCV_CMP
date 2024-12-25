@@ -20,10 +20,10 @@ kotlin {
                 implementation(project(":common"))
                 implementation(compose.desktop.currentOs)
 
-                runtimeOnly("io.insert-koin:koin-core:3.4.2")// https://mvnrepository.com/artifact/io.insert-koin/koin-core
-                implementation("io.insert-koin:koin-core-coroutines:3.4.1")// https://mvnrepository.com/artifact/io.insert-koin/koin-core-coroutines
-                implementation("io.insert-koin:koin-compose-jvm:1.0.4")// https://mvnrepository.com/artifact/io.insert-koin/koin-compose-jvm
-                implementation("io.insert-koin:koin-compose:1.0.4")// https://mvnrepository.com/artifact/io.insert-koin/koin-compose
+                runtimeOnly("io.insert-koin:koin-core:3.5.3")// https://mvnrepository.com/artifact/io.insert-koin/koin-core
+                implementation("io.insert-koin:koin-core-coroutines:3.5.3")// https://mvnrepository.com/artifact/io.insert-koin/koin-core-coroutines
+                implementation("io.insert-koin:koin-compose-jvm:1.1.2")// https://mvnrepository.com/artifact/io.insert-koin/koin-compose-jvm
+                implementation("io.insert-koin:koin-compose:1.1.2")// https://mvnrepository.com/artifact/io.insert-koin/koin-compose
             }
         }
     }
