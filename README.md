@@ -1,4 +1,4 @@
-[TR] Fundus görüntülerini ve birbirleriyle alakalı görüntüleri birleştiren bir uygulama. Bu birleştirme sırasında CLAHE seçeneği Fundus görüntüleri ile kullanılması gerekmektedir. Ayrıca CLAHE efektini canlı olaraka kamera ekranında görebiliriz. 
+[TR] Fundus görüntülerini ve birbirleriyle alakalı görüntüleri birleştiren bir uygulama. Bu birleştirme sırasında CLAHE seçeneği Fundus görüntüleri ile kullanılması gerekmektedir. Ayrıca CLAHE efektini canlı olarak da kamera ekranında görebiliriz. 
 
 [EN] An application that merges fundus images and related images. During this merging, the CLAHE option must be used with Fundus images. We can also see the CLAHE effect live on the camera screen. 
 
